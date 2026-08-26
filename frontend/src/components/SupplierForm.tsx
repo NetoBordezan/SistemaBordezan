@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import {isValidCNPJ} from 'cnpj-cpf-validator';
+import {IMaskInput} from 'react-imask';
 import type { Supplier } from "../types/Supplier";
 
 interface SupplierFormProps {
@@ -7,11 +9,7 @@ interface SupplierFormProps {
     onCancelEdit: () => void;
 }
 
-function SupplierForm({
-                          supplierToEdit,
-                          onSaveSupplier,
-                          onCancelEdit,
-                      }: SupplierFormProps) {
+function SupplierForm({supplierToEdit,onSaveSupplier,onCancelEdit}: SupplierFormProps) {
     const [supplier, setSupplier] = useState<Supplier>({
         name: "",
         email: "",
@@ -34,7 +32,8 @@ function SupplierForm({
             [name]: value,
         });
     }
-
+    
+    //limpa o formulário
     function clearForm() {
         setSupplier({
             name: "",
@@ -45,13 +44,21 @@ function SupplierForm({
         });
     }
 
+    //função para envio do formulário
     function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
+
+        //Validação do CNPJ
+        if(!isValidCNPJ(supplier.cnpj)) {
+            alert("CNPJ inválido. Por favor, insira um CNPJ válido.");
+            return;
+        }
 
         onSaveSupplier(supplier);
         clearForm();
     }
 
+    //Cancelar formulário de edição
     function handleCancel() {
         clearForm();
         onCancelEdit();
@@ -79,19 +86,21 @@ function SupplierForm({
                 required
             />
 
-            <input
+            <IMaskInput
                 type="text"
                 name="cnpj"
-                placeholder="CNPJ"
+                mask="00.000.000/0000-00"
+                placeholder="00.000.000/0000-00"
                 value={supplier.cnpj}
                 onChange={handleChange}
                 required
             />
 
-            <input
+            <IMaskInput
                 type="text"
                 name="phone"
-                placeholder="Telefone"
+                mask="(00) 00000-0000"
+                placeholder="(00) 00000-0000"
                 value={supplier.phone}
                 onChange={handleChange}
                 required
@@ -101,11 +110,9 @@ function SupplierForm({
                 {supplierToEdit ? "Atualizar" : "Cadastrar"}
             </button>
 
-            {supplierToEdit && (
-                <button type="button" className="cancel-button" onClick={handleCancel}>
-                    Cancelar
-                </button>
-            )}
+            <button type="button" className="cancel-button" onClick={handleCancel}>
+                Cancelar
+            </button>
         </form>
     );
 }

@@ -1,0 +1,40 @@
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.dashboard-card {
+    display: grid;
+    gap: 8px;
+}
+
+.dashboard-card-label {
+    color: #6b3a16;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.dashboard-card strong {
+    font-size: 18px;
+}
+
+.dashboard-card p {
+    margin: 0;
+    color: #6f6258;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.placeholder-card h2,
+.placeholder-card p {
+    margin-top: 0;
+}
+
+@media (max-width: 1000px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,133 @@
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 250px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 18px;
+    background: #4b2208;
+    color: #fff;
+}
+
+.sidebar-brand {
+    display: grid;
+    gap: 5px;
+    padding: 0 10px 26px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.sidebar-brand-title {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.sidebar-nav {
+    display: grid;
+    gap: 6px;
+    margin-top: 22px;
+}
+
+.sidebar-link {
+    width: 100%;
+    padding: 12px 13px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #fff;
+    text-align: left;
+    font-size: 14px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: #6b3a16;
+}
+
+.main-content {
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    margin-left: 250px;
+    padding: 32px;
+}
+
+.page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1,
+.page-header p {
+    margin: 0;
+}
+
+.page-header h1 {
+    font-size: 32px;
+}
+
+.page-header p {
+    margin-top: 8px;
+    color: #6f6258;
+}
+
+.content {
+    display: grid;
+    gap: 24px;
+    align-items: start;
+}
+
+.content-with-form {
+    grid-template-columns: 360px minmax(0, 1fr);
+}
+
+.content-centered {
+    grid-template-columns: minmax(0, 900px);
+    justify-content: center;
+}
+
+@media (max-width: 1000px) {
+    .sidebar {
+        width: 210px;
+    }
+
+    .main-content {
+        width: calc(100% - 210px);
+        margin-left: 210px;
+    }
+
+    .content-with-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .app-shell {
+        display: block;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .sidebar-nav {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px;
+    }
+}
