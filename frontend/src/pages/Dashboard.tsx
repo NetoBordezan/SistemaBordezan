@@ -8,19 +8,19 @@ function Dashboard() {
 
             <section className="dashboard-grid">
                 <div className="dashboard-card">
-                    <span className="dashboard-card-label">Suppliers</span>
+                    <span className="dashboard-card-label">Fornecedores</span>
                     <strong>Gerenciar fornecedores</strong>
                     <p>Cadastro, consulta, edição e exclusão.</p>
                 </div>
 
                 <div className="dashboard-card">
-                    <span className="dashboard-card-label">Products</span>
+                    <span className="dashboard-card-label">Produtos</span>
                     <strong>Gerenciar produtos</strong>
                     <p>Cadastro, consulta, edição e exclusão.</p>
                 </div>
 
                 <div className="dashboard-card">
-                    <span className="dashboard-card-label">System</span>
+                    <span className="dashboard-card-label">Sistema</span>
                     <strong>Módulos do sistema</strong>
                     <p>Outras áreas poderão ser adicionadas aqui.</p>
                 </div>

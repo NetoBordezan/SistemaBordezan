@@ -3,9 +3,10 @@
 .placeholder-card,
 .dashboard-card {
     background: #fff;
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 22px;
+    border: 1px solid #e9ded2;
+    box-shadow: 0 8px 26px rgba(63, 33, 15, 0.06);
 }
 
 .form-section {
@@ -16,14 +17,14 @@
 .supplier-form,
 .product-form {
     display: grid;
-    gap: 12px;
+    gap: 13px;
 }
 
 .supplier-form h3,
 .product-form h3,
 .list-header h3 {
     margin: 0;
-    color: #4b2208;
+    color: #3f210f;
 }
 
 .supplier-form h3,
@@ -36,29 +37,32 @@
 .product-form textarea,
 .search-input {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #d6c7b6;
-    border-radius: 8px;
+    padding: 12px 13px;
+    border: 1px solid #d9ccbf;
+    border-radius: 9px;
     outline: none;
     background: #fff;
     font-size: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .supplier-form input:focus,
 .product-form input:focus,
 .product-form textarea:focus,
 .search-input:focus {
-    border-color: #6b3a16;
+    border-color: #b27a16;
+    box-shadow: 0 0 0 3px rgba(178, 122, 22, 0.10);
 }
 
 .supplier-form button,
 .product-form button,
 .new-button {
     border: 0;
-    border-radius: 8px;
-    background: #4b2208;
+    border-radius: 9px;
+    background: #4a250f;
     color: #fff;
-    font-weight: bold;
+    font-weight: 700;
+    transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .supplier-form button,
@@ -67,27 +71,38 @@
 }
 
 .new-button {
-    display: block;
-    width: fit-content;
-    margin: 0 auto 20px;
-    padding: 10px 24px;
+    flex-shrink: 0;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 9px;
+    background: #4a250f;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .supplier-form button:hover,
 .product-form button:hover,
 .new-button:hover,
 .edit-button:hover {
-    background: #6b3a16;
+    background: #66340f;
+}
+
+.new-button:hover {
+    background: #5d3213;
+    transform: translateY(-1px);
 }
 
 .cancel-button {
-    border: 1px solid #d6c7b6 !important;
+    border: 1px solid #d8ccbf !important;
     background: #fff !important;
-    color: #4b2208 !important;
+    color: #4a250f !important;
 }
 
 .cancel-button:hover {
-    background: #f3eadf !important;
+    background: #f6f0e9 !important;
 }
 
 .checkbox-field {
@@ -105,6 +120,24 @@
 .error-message {
     color: #b42318;
     font-weight: bold;
+}
+
+.empty-state {
+    display: grid;
+    gap: 5px;
+    padding: 36px 20px;
+    text-align: center;
+    color: #6f6258;
+}
+
+.empty-state strong {
+    color: #3f210f;
+}
+
+.list-description {
+    margin: 5px 0 0;
+    color: #88796b;
+    font-size: 13px;
 }
 
 @media (max-width: 1000px) {

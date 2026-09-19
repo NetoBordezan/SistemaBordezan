@@ -13,6 +13,7 @@ function Products() {
     const [productToEdit, setProductToEdit] = useState<Product | null>(null);
     const [showForm, setShowForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -98,17 +99,32 @@ function Products() {
             });
     }
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredProducts = products.filter((product) => {
+        const matchesSearch = product.name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+        const matchesStatus =
+            statusFilter === "all" ||
+            (statusFilter === "active" && product.active) ||
+            (statusFilter === "inactive" && !product.active);
+
+        return matchesSearch && matchesStatus;
+    });
 
     return (
         <div className="page">
-            <header className="page-header">
+            <header className="page-header page-header-with-action">
                 <div>
                     <h1>Produtos</h1>
                     <p>Gerencie os produtos cadastrados no sistema.</p>
                 </div>
+
+                {!showForm && (
+                    <button className="new-button" onClick={openNewProductForm}>
+                        Cadastrar novo produto
+                    </button>
+                )}
             </header>
 
             <main className={`content ${showForm ? "content-with-form" : "content-centered"}`}>
@@ -123,43 +139,76 @@ function Products() {
                 )}
 
                 <section className="list-section">
-                    {!showForm && (
-                        <button className="new-button" onClick={openNewProductForm}>
-                            + Cadastrar novo produto
-                        </button>
-                    )}
-
                     <div className="list-header">
-                        <h3>Produtos cadastrados</h3>
-                        <input
-                            className="search-input"
-                            type="text"
-                            placeholder="Buscar produto..."
-                            value={searchTerm}
-                            onChange={(event) => setSearchTerm(event.target.value)}
-                        />
+                        <div>
+                            <h3>Produtos cadastrados</h3>
+                            <p className="list-description">
+                                {filteredProducts.length} produto(s) encontrado(s)
+                            </p>
+                        </div>
+
+                        <div className="list-filters">
+                            <input
+                                className="search-input"
+                                type="text"
+                                placeholder="Buscar produto..."
+                                value={searchTerm}
+                                onChange={(event) => setSearchTerm(event.target.value)}
+                            />
+
+                            <select
+                                className="status-filter"
+                                value={statusFilter}
+                                onChange={(event) =>
+                                    setStatusFilter(event.target.value as "all" | "active" | "inactive")
+                                }
+                            >
+                                <option value="all">Todos os status</option>
+                                <option value="active">Ativos</option>
+                                <option value="inactive">Inativos</option>
+                            </select>
+                        </div>
                     </div>
 
                     {loading && <p>Carregando produtos...</p>}
                     {error && <p className="error-message">{error}</p>}
 
                     {!loading && !error && products.length === 0 && (
-                        <p>Nenhum produto cadastrado.</p>
+                        <div className="empty-state">
+                            <strong>Nenhum produto cadastrado.</strong>
+                            <span>Cadastre o primeiro produto usando o botão acima.</span>
+                        </div>
                     )}
 
                     {!loading && !error && products.length > 0 && filteredProducts.length === 0 && (
-                        <p>Nenhum produto encontrado.</p>
+                        <div className="empty-state">
+                            <strong>Nenhum produto encontrado.</strong>
+                            <span>Altere a busca ou o filtro de status.</span>
+                        </div>
                     )}
 
                     <ul className="product-list">
                         {filteredProducts.map((product) => (
                             <li key={product.id} className="product-item">
-                                <div className="product-info">
-                                    <strong>{product.name}</strong>
-                                    <span>Descrição: {product.description}</span>
-                                    <span>Preço: R$ {product.price.toFixed(2)}</span>
-                                    <span>Unidade: {product.unitOfMeasure}</span>
-                                    <span>Status: {product.active ? "Ativo" : "Inativo"}</span>
+                                <div className="product-card-header">
+                                    <div>
+                                        <strong>{product.name}</strong>
+                                        <span>{product.description}</span>
+                                    </div>
+                                    <span className={`status-badge ${product.active ? "active" : "inactive"}`}>
+                                        {product.active ? "Ativo" : "Inativo"}
+                                    </span>
+                                </div>
+
+                                <div className="product-details">
+                                    <div>
+                                        <span className="detail-label">Preço</span>
+                                        <span>R$ {product.price.toFixed(2)}</span>
+                                    </div>
+                                    <div>
+                                        <span className="detail-label">Unidade</span>
+                                        <span>{product.unitOfMeasure || "Não informado"}</span>
+                                    </div>
                                 </div>
 
                                 <div className="product-actions">

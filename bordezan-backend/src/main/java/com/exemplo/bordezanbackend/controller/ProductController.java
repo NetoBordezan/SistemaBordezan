@@ -5,6 +5,7 @@ import com.exemplo.bordezanbackend.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product supplier) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createProduct(supplier));
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createProduct(product));
     }
 
     @GetMapping
@@ -32,25 +33,22 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> supplier = service.getProductById(id);
+        Optional<Product> product = service.getProductById(id);
 
-        if (supplier.isPresent()) {
-            return ResponseEntity.ok(supplier.get());
+        if (product.isPresent()) {
+            return ResponseEntity.ok(product.get());
         }
 
         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProductById(@PathVariable Long id, @RequestBody Product supplier) {
-        Optional<Product> supplierToUpdate = service.getProductById(id);
+    public ResponseEntity<Product> updateProductById(@PathVariable Long id, @Valid @RequestBody Product product) {
+        Optional<Product> productToUpdate = service.getProductById(id);
 
-        if (supplierToUpdate.isPresent()) {
-            supplier.setId(id);
-
-            Product updatedProduct = service.updateProduct(supplier);
-
-            return ResponseEntity.ok(updatedProduct);
+        if (productToUpdate.isPresent()) {
+            product.setId(id);
+            return ResponseEntity.ok(service.updateProduct(id,product));
         }
 
         return ResponseEntity.notFound().build();
@@ -58,9 +56,9 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
-        Optional<Product> supplierToDelete = service.getProductById(id);
+        Optional<Product> productToDelete = service.getProductById(id);
 
-        if (supplierToDelete.isPresent()) {
+        if (productToDelete.isPresent()) {
             service.deleteById(id);
 
             return ResponseEntity.noContent().build();

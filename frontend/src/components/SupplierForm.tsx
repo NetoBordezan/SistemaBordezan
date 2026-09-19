@@ -105,6 +105,19 @@ function SupplierForm({supplierToEdit,onSaveSupplier,onCancelEdit}: SupplierForm
                 onChange={handleChange}
                 required
             />
+            <label className="checkbox-field">
+                <input
+                    type="checkbox"
+                    checked={supplier.active ?? true}
+                    onChange={(event) =>
+                        setSupplier((current) => ({
+                            ...current,
+                            active: event.target.checked,
+                        }))
+                    }
+                />
+            Fornecedor ativo
+        </label>
 
             <button type="submit">
                 {supplierToEdit ? "Atualizar" : "Cadastrar"}

@@ -28,8 +28,17 @@ public class SupplierService {
         return repository.findById(id);
     }
 
-    public Supplier updateSupplier(Supplier supplier) {
-        return repository.save(supplier);
+    public Supplier updateSupplier(Long id, Supplier supplier) {
+        Supplier existingSupplier = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fornecedor não encontrado"));
+
+        existingSupplier.setName(supplier.getName());
+        existingSupplier.setEmail(supplier.getEmail());
+        existingSupplier.setCnpj(supplier.getCnpj());
+        existingSupplier.setPhone(supplier.getPhone());
+        existingSupplier.setActive(supplier.getActive());
+
+        return repository.save(existingSupplier);
     }
 
     public void deleteById(Long id) {

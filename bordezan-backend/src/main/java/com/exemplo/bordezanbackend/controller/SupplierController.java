@@ -5,6 +5,7 @@ import com.exemplo.bordezanbackend.service.SupplierService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class SupplierController {
     }
 
     @PostMapping
-    public ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier) {
+    public ResponseEntity<Supplier> createSupplier(@Valid @RequestBody Supplier supplier) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createSupplier(supplier));
     }
 
@@ -42,13 +43,13 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Supplier> updateSupplierById(@PathVariable Long id, @RequestBody Supplier supplier) {
+    public ResponseEntity<Supplier> updateSupplierById(@PathVariable Long id, @Valid @RequestBody Supplier supplier) {
         Optional<Supplier> supplierToUpdate = service.getSupplierById(id);
 
         if (supplierToUpdate.isPresent()) {
             supplier.setId(id);
 
-            Supplier updatedSupplier = service.updateSupplier(supplier);
+            Supplier updatedSupplier = service.updateSupplier(id,supplier);
 
             return ResponseEntity.ok(updatedSupplier);
         }

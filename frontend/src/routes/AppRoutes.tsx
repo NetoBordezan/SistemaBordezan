@@ -31,15 +31,15 @@ function AppRoutes({ currentPath }: AppRoutesProps) {
         case "/products":
             return <Products />;
         case "/ingredients":
-            return <PlaceholderPage title="Ingredients" />;
+            return <PlaceholderPage title="Matérias-Primas" />;
         case "/recipes":
-            return <PlaceholderPage title="Recipes" />;
+            return <PlaceholderPage title="Fichas Técnicas" />;
         case "/orders":
-            return <PlaceholderPage title="Orders" />;
+            return <PlaceholderPage title="Encomendas" />;
         case "/users":
-            return <PlaceholderPage title="Users" />;
+            return <PlaceholderPage title="Usuários" />;
         default:
-            return <PlaceholderPage title="Page not found" />;
+            return <PlaceholderPage title="Página não encontrada" />;
     }
 }
 

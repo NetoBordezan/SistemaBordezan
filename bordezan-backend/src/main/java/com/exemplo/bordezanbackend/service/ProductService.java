@@ -28,8 +28,17 @@ public class ProductService {
         return repository.findById(id);
     }
 
-    public Product updateProduct(Product supplier) {
-        return repository.save(supplier);
+    public Product updateProduct(Long id, Product product) {
+        Product existingProduct = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setUnitOfMeasure(product.getUnitOfMeasure());
+        existingProduct.setActive(product.getActive());
+
+        return repository.save(existingProduct);
     }
 
     public void deleteById(Long id) {

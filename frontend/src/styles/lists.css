@@ -1,7 +1,33 @@
 .list-header {
     display: grid;
-    gap: 12px;
-    margin-bottom: 18px;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 500px);
+    gap: 20px;
+    align-items: end;
+    margin-bottom: 20px;
+}
+
+.list-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 170px;
+    gap: 10px;
+}
+
+.status-filter {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid #d9ccbf;
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: #51443a;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.status-filter:focus {
+    border-color: #b27a16;
+    box-shadow: 0 0 0 3px rgba(178, 122, 22, 0.10);
 }
 
 .supplier-list,
@@ -10,56 +36,119 @@
     padding: 0;
     margin: 0;
     display: grid;
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
 }
 
 .supplier-item,
 .product-item {
+    min-width: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    padding: 22px;
+    border: 1px solid #e9ded2;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(63, 33, 15, 0.05);
+}
+
+.supplier-card-header,
+.product-card-header {
+    display: flex;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
-    padding: 16px;
-    border: 1px solid #eadbca;
-    border-radius: 12px;
-    background: #fffaf4;
 }
 
-.supplier-info,
-.product-info {
+.supplier-card-header > div,
+.product-card-header > div {
+    min-width: 0;
     display: grid;
-    gap: 6px;
+    gap: 5px;
 }
 
-.supplier-info strong,
-.product-info strong {
-    font-size: 18px;
+.supplier-card-header strong,
+.product-card-header strong {
+    color: #2f1b0f;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 21px;
+    line-height: 1.2;
 }
 
-.supplier-info span,
-.product-info span {
-    color: #5f5248;
+.supplier-contact-name,
+.product-card-header span:not(.status-badge) {
+    overflow-wrap: anywhere;
+    color: #876e5f;
+    font-size: 13px;
+}
+
+.status-badge {
+    flex-shrink: 0;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-badge.active {
+    background: #edf7ee;
+    color: #2f7a3d;
+}
+
+.status-badge.inactive {
+    background: #f8eeee;
+    color: #a13b32;
+}
+
+.supplier-details,
+.product-details {
+    display: grid;
+    gap: 13px;
+    padding-top: 16px;
+    border-top: 1px solid #ede4da;
+}
+
+.supplier-details > div,
+.product-details > div {
+    display: grid;
+    gap: 4px;
+}
+
+.supplier-details span:not(.detail-label),
+.product-details span:not(.detail-label) {
+    color: #51443a;
     font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.detail-label {
+    color: #987764;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .supplier-actions,
 .product-actions {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: auto;
 }
 
 .edit-button,
 .delete-button {
-    padding: 8px 12px;
+    padding: 10px 12px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 9px;
     color: #fff;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .edit-button {
-    background: #4b2208;
+    background: #4a250f;
 }
 
 .delete-button {
@@ -70,20 +159,31 @@
     background: #8f1d14;
 }
 
+@media (max-width: 1150px) {
+    .supplier-list,
+    .product-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 850px) {
+    .list-header {
+        grid-template-columns: 1fr;
+    }
+
+    .list-filters {
+        grid-template-columns: 1fr 170px;
+    }
+
+    .supplier-list,
+    .product-list {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 760px) {
     .supplier-item,
     .product-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .supplier-actions,
-    .product-actions {
-        width: 100%;
-    }
-
-    .edit-button,
-    .delete-button {
-        flex: 1;
+        padding: 18px;
     }
 }
