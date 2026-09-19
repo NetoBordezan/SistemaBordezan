@@ -17,6 +17,9 @@ public class SupplierService {
     }
 
     public Supplier createSupplier(Supplier supplier) {
+        if (repository.existsByCnpj(supplier.getCnpj())) {
+            throw new RuntimeException("CNPJ já cadastrado");
+        }
         return repository.save(supplier);
     }
 
