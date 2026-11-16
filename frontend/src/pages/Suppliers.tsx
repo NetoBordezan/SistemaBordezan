@@ -1,116 +1,58 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import type { Supplier } from "../types/Supplier";
+import type { StatusFilter } from "../utils/filterByNameAndStatus";
+
+import { useCrud } from "../hooks/useCrud";
+
 import SupplierForm from "../components/SupplierForm";
+
 import {
     createSupplier,
     deleteSupplier,
     getSuppliers,
     updateSupplier,
 } from "../services/supplierService";
-import type { Supplier } from "../types/Supplier";
+
+import { filterByNameAndStatus } from "../utils/filterByNameAndStatus";
 
 function Suppliers() {
-    const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-    const [supplierToEdit, setSupplierToEdit] = useState<Supplier | null>(null);
-    const [showForm, setShowForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
-    useEffect(() => {
-        loadSuppliers();
-    }, []);
+    const {
+        items: suppliers,
+        itemToEdit: supplierToEdit,
+        showForm,
+        loading,
+        error,
 
-    function loadSuppliers() {
-        setLoading(true);
-        setError("");
+        openNewForm: openNewSupplierForm,
+        openEditForm: openEditSupplierForm,
+        closeForm,
 
-        getSuppliers()
-            .then((data) => setSuppliers(data))
-            .catch((error) => {
-                console.error(error);
-                setError("Erro ao buscar fornecedores do back-end");
-            })
-            .finally(() => setLoading(false));
-    }
+        saveItem: handleSaveSupplier,
+        deleteItem: handleDeleteSupplier,
+    } = useCrud<Supplier>({
+        list: getSuppliers,
+        create: createSupplier,
+        update: updateSupplier,
+        remove: deleteSupplier,
 
-    function openNewSupplierForm() {
-        setSupplierToEdit(null);
-        setShowForm(true);
-    }
-
-    function openEditSupplierForm(supplier: Supplier) {
-        setSupplierToEdit(supplier);
-        setShowForm(true);
-    }
-
-    function closeForm() {
-        setSupplierToEdit(null);
-        setShowForm(false);
-    }
-
-    function handleSaveSupplier(supplier: Supplier) {
-        if (supplier.id !== undefined) {
-            updateSupplier(supplier.id, supplier)
-                .then((updatedSupplier) => {
-                    setSuppliers((current) =>
-                        current.map((item) =>
-                            item.id === updatedSupplier.id ? updatedSupplier : item
-                        )
-                    );
-                    closeForm();
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert("Erro ao atualizar fornecedor");
-                });
-            return;
-        }
-
-        createSupplier(supplier)
-            .then((createdSupplier) => {
-                setSuppliers((current) => [...current, createdSupplier]);
-                closeForm();
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Erro ao cadastrar fornecedor");
-            });
-    }
-
-    function handleDeleteSupplier(id: number) {
-        if (!confirm("Deseja realmente excluir este fornecedor?")) {
-            return;
-        }
-
-        deleteSupplier(id)
-            .then(() => {
-                setSuppliers((current) =>
-                    current.filter((supplier) => supplier.id !== id)
-                );
-
-                if (supplierToEdit?.id === id) {
-                    closeForm();
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Erro ao excluir fornecedor");
-            });
-    }
-
-    const filteredSuppliers = suppliers.filter((supplier) => {
-        const matchesSearch = supplier.name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-
-        const matchesStatus =
-            statusFilter === "all" ||
-            (statusFilter === "active" && supplier.active) ||
-            (statusFilter === "inactive" && !supplier.active);
-
-        return matchesSearch && matchesStatus;
+        messages: {
+            loadError: "Erro ao buscar fornecedores do back-end",
+            createError: "Erro ao cadastrar fornecedor",
+            updateError: "Erro ao atualizar fornecedor",
+            deleteError: "Erro ao excluir fornecedor",
+            confirmDelete: "Deseja realmente excluir este fornecedor?",
+        },
     });
+
+    const filteredSuppliers = filterByNameAndStatus(
+        suppliers,
+        searchTerm,
+        statusFilter
+    );
 
     return (
         <div className="page">
@@ -197,8 +139,8 @@ function Suppliers() {
                                             {supplier.email}
                                         </span>
                                     </div>
-                                    <span className={`status-badge ${supplier.active ? "active" : "inactive"}`}>
-                                        {supplier.active ? "Ativo" : "Inativo"}
+                                    <span className={`status-badge ${supplier.active !== false ? "active" : "inactive"}`}>
+                                        {supplier.active !== false ? "Ativo" : "Inativo"}
                                     </span>
                                 </div>
 

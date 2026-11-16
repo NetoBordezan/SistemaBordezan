@@ -1,116 +1,57 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import type { Product } from "../types/Product";
+import type { StatusFilter } from "../utils/filterByNameAndStatus";
+
+import { useCrud } from "../hooks/useCrud";
+import { filterByNameAndStatus } from "../utils/filterByNameAndStatus";
+
 import ProductForm from "../components/ProductForm";
+
 import {
     createProduct,
     deleteProduct,
     getProducts,
     updateProduct,
 } from "../services/productService";
-import type { Product } from "../types/Product";
 
 function Products() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [productToEdit, setProductToEdit] = useState<Product | null>(null);
-    const [showForm, setShowForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
-    useEffect(() => {
-        loadProducts();
-    }, []);
+    const {
+        items: products,
+        itemToEdit: productToEdit,
+        showForm,
+        loading,
+        error,
 
-    function loadProducts() {
-        setLoading(true);
-        setError("");
+        openNewForm: openNewProductForm,
+        openEditForm: openEditProductForm,
+        closeForm,
 
-        getProducts()
-            .then((data) => setProducts(data))
-            .catch((error) => {
-                console.error(error);
-                setError("Erro ao buscar produtos do back-end");
-            })
-            .finally(() => setLoading(false));
-    }
+        saveItem: handleSaveProduct,
+        deleteItem: handleDeleteProduct,
+    } = useCrud<Product>({
+        list: getProducts,
+        create: createProduct,
+        update: updateProduct,
+        remove: deleteProduct,
 
-    function openNewProductForm() {
-        setProductToEdit(null);
-        setShowForm(true);
-    }
-
-    function openEditProductForm(product: Product) {
-        setProductToEdit(product);
-        setShowForm(true);
-    }
-
-    function closeForm() {
-        setProductToEdit(null);
-        setShowForm(false);
-    }
-
-    function handleSaveProduct(product: Product) {
-        if (product.id !== undefined) {
-            updateProduct(product.id, product)
-                .then((updatedProduct) => {
-                    setProducts((current) =>
-                        current.map((item) =>
-                            item.id === updatedProduct.id ? updatedProduct : item
-                        )
-                    );
-                    closeForm();
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert("Erro ao atualizar produto");
-                });
-            return;
-        }
-
-        createProduct(product)
-            .then((createdProduct) => {
-                setProducts((current) => [...current, createdProduct]);
-                closeForm();
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Erro ao cadastrar produto");
-            });
-    }
-
-    function handleDeleteProduct(id: number) {
-        if (!confirm("Deseja realmente excluir este produto?")) {
-            return;
-        }
-
-        deleteProduct(id)
-            .then(() => {
-                setProducts((current) =>
-                    current.filter((product) => product.id !== id)
-                );
-
-                if (productToEdit?.id === id) {
-                    closeForm();
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Erro ao excluir produto");
-            });
-    }
-
-    const filteredProducts = products.filter((product) => {
-        const matchesSearch = product.name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-
-        const matchesStatus =
-            statusFilter === "all" ||
-            (statusFilter === "active" && product.active) ||
-            (statusFilter === "inactive" && !product.active);
-
-        return matchesSearch && matchesStatus;
+        messages: {
+            loadError: "Erro ao buscar produtos do back-end",
+            createError: "Erro ao cadastrar produto",
+            updateError: "Erro ao atualizar produto",
+            deleteError: "Erro ao excluir produto",
+            confirmDelete: "Deseja realmente excluir este produto?",
+        },
     });
+
+    const filteredProducts = filterByNameAndStatus(
+        products,
+        searchTerm,
+        statusFilter
+    );
 
     return (
         <div className="page">
@@ -195,8 +136,8 @@ function Products() {
                                         <strong>{product.name}</strong>
                                         <span>{product.description}</span>
                                     </div>
-                                    <span className={`status-badge ${product.active ? "active" : "inactive"}`}>
-                                        {product.active ? "Ativo" : "Inativo"}
+                                    <span className={`status-badge ${product.active !== false ? "active" : "inactive"}`}>
+                                        {product.active !== false ? "Ativo" : "Inativo"}
                                     </span>
                                 </div>
 

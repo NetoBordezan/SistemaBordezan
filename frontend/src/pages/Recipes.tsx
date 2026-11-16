@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCrud } from "../hooks/useCrud";
 import type { Recipe } from "../types/Recipe";
 import RecipeStats from "../components/recipes/RecipeStats";
 import RecipeForm from "../components/recipes/RecipeForm";
@@ -12,98 +12,33 @@ import {
 } from "../services/recipeService";
 
 function Recipes() {
-    const [recipes, setRecipes] = useState<Recipe[]>([]);
-    const [recipeToEdit, setRecipeToEdit] = useState<Recipe | null>(null);
-    const [showForm, setShowForm] = useState(false);
+    const {
+        items: recipes,
+        itemToEdit: recipeToEdit,
+        showForm,
+        loading,
+        error,
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+        openNewForm: openNewRecipeForm,
+        openEditForm: openEditRecipeForm,
+        closeForm,
 
-    useEffect(() => {
-        setLoading(true);
-        setError("");
+        saveItem: handleSaveRecipe,
+        deleteItem: handleDeleteRecipe,
+    } = useCrud<Recipe>({
+        list: getRecipes,
+        create: createRecipe,
+        update: updateRecipe,
+        remove: deleteRecipe,
 
-        getRecipes()
-            .then((data) => setRecipes(data))
-            .catch((error) => {
-                console.error(error);
-                setError("Erro ao buscar fichas técnicas do back-end");
-            })
-            .finally(() => setLoading(false));
-    }, []);
-
-    function openNewRecipeForm() {
-        setRecipeToEdit(null);
-        setShowForm(true);
-    }
-
-    function openEditRecipeForm(recipe: Recipe) {
-        setRecipeToEdit(recipe);
-        setShowForm(true);
-    }
-
-    function closeForm() {
-        setRecipeToEdit(null);
-        setShowForm(false);
-    }
-    function handleSaveRecipe(recipe: Recipe) {
-
-        // Atualização
-        if (recipe.id !== undefined) {
-            const id = recipe.id;
-
-            updateRecipe(id, recipe)
-                .then((updatedRecipe) => {
-                    setRecipes((current) =>
-                        current.map((item) =>
-                            item.id === id
-                                ? { ...updatedRecipe, id }
-                                : item
-                        )
-                    );
-
-                    closeForm();
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert("Erro ao atualizar ficha técnica");
-                });
-
-            return;
-        }
-
-        createRecipe(recipe)
-            .then((createdRecipe) => {
-                setRecipes((current) => [...current, createdRecipe]);
-                closeForm();
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Erro ao cadastrar ficha técnica");
-            });
-    }
-    function handleDeleteRecipe(id: number) {
-
-        if (!confirm("Deseja realmente excluir esta ficha técnica?")) {
-            return;
-        }
-
-        deleteRecipe(id)
-            .then(() => {
-                setRecipes((current) =>
-                    current.filter((recipe) => recipe.id !== id)
-                );
-
-                if (recipeToEdit?.id === id) {
-                    closeForm();
-                }
-
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Erro ao excluir ficha técnica");
-            });
-    }
+        messages: {
+            loadError: "Erro ao buscar fichas técnicas do back-end",
+            createError: "Erro ao cadastrar ficha técnica",
+            updateError: "Erro ao atualizar ficha técnica",
+            deleteError: "Erro ao excluir ficha técnica",
+            confirmDelete: "Deseja realmente excluir esta ficha técnica?",
+        },
+});
 
 
         return (

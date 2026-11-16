@@ -1,6 +1,8 @@
 import type { Ingredient } from "../types/Ingredient";
+import { apiRequest } from "./api";
 
-const API_URL = "http://localhost:8080/ingredients";
+const RESOURCE = "/ingredients";
+
 
 function createIngredientPayload(ingredient: Ingredient) {
     return {
@@ -12,59 +14,49 @@ function createIngredientPayload(ingredient: Ingredient) {
     };
 }
 
-export async function getIngredients(): Promise<Ingredient[]> {
-    const response = await fetch(API_URL);
-
-    if (!response.ok) {
-        throw new Error("Erro ao buscar matérias-primas");
-    }
-
-    return response.json();
+export function getIngredients(): Promise<Ingredient[]> {
+    return apiRequest<Ingredient[]>(
+        RESOURCE,
+        {},
+        "Erro ao buscar matérias-primas"
+    );
 }
 
-export async function createIngredient(ingredient: Ingredient): Promise<Ingredient> {
+export function createIngredient(
+    ingredient: Ingredient
+): Promise<Ingredient> {
 
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
+    return apiRequest<Ingredient>(
+        RESOURCE,
+        {
+            method: "POST",
+            body: JSON.stringify(createIngredientPayload(ingredient)),
         },
-        body: JSON.stringify(createIngredientPayload(ingredient)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao cadastrar matéria-prima");
-    }
-
-    return response.json();
+        "Erro ao cadastrar matéria-prima"
+    );
 }
 
-export async function updateIngredient(
+export function updateIngredient(
     id: number,
     ingredient: Ingredient
 ): Promise<Ingredient> {
 
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
+    return apiRequest<Ingredient>(
+        `${RESOURCE}/${id}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(createIngredientPayload(ingredient)),
         },
-        body: JSON.stringify(createIngredientPayload(ingredient)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao atualizar matéria-prima");
-    }
-
-    return response.json();
+        "Erro ao atualizar matéria-prima"
+    );
 }
 
-export async function deleteIngredient(id: number): Promise<void> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao excluir matéria-prima");
-    }
+export function deleteIngredient(id: number): Promise<void> {
+    return apiRequest<void>(
+        `${RESOURCE}/${id}`,
+        {
+            method: "DELETE",
+        },
+        "Erro ao excluir matéria-prima"
+    );
 }

@@ -1,6 +1,7 @@
 import type { Supplier } from "../types/Supplier";
+import { apiRequest } from "./api";
 
-const API_URL = "http://localhost:8080/suppliers";
+const RESOURCE = "/suppliers";
 
 function createSupplierPayload(supplier: Supplier) {
     return {
@@ -12,57 +13,43 @@ function createSupplierPayload(supplier: Supplier) {
     };
 }
 
-export async function getSuppliers(): Promise<Supplier[]> {
-    const response = await fetch(API_URL);
-
-    if (!response.ok) {
-        throw new Error("Erro ao buscar fornecedores");
-    }
-
-    return response.json();
+export function getSuppliers(): Promise<Supplier[]> {
+    return apiRequest<Supplier[]>(
+        RESOURCE,
+        {},
+        "Erro ao buscar fornecedores"
+    );
 }
 
-export async function createSupplier(supplier: Supplier): Promise<Supplier> {
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
+export function createSupplier(supplier: Supplier): Promise<Supplier> {
+    return apiRequest<Supplier>(
+        RESOURCE,
+        {
+            method: "POST",
+            body: JSON.stringify(createSupplierPayload(supplier)),
         },
-        body: JSON.stringify(createSupplierPayload(supplier)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao cadastrar fornecedor");
-    }
-
-    return response.json();
+        "Erro ao cadastrar fornecedor"
+    );
 }
 
-export async function updateSupplier(
+export function updateSupplier(
     id: number,
     supplier: Supplier
 ): Promise<Supplier> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
+    return apiRequest<Supplier>(
+        `${RESOURCE}/${id}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(createSupplierPayload(supplier)),
         },
-        body: JSON.stringify(createSupplierPayload(supplier)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao atualizar fornecedor");
-    }
-
-    return response.json();
+        "Erro ao atualizar fornecedor"
+    );
 }
 
-export async function deleteSupplier(id: number): Promise<void> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao excluir fornecedor");
-    }
+export function deleteSupplier(id: number): Promise<void> {
+    return apiRequest<void>(
+        `${RESOURCE}/${id}`,
+        { method: "DELETE" },
+        "Erro ao excluir fornecedor"
+    );
 }

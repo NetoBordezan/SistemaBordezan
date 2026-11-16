@@ -1,6 +1,7 @@
 import type { Product } from "../types/Product";
+import { apiRequest } from "./api";
 
-const API_URL = "http://localhost:8080/products";
+const RESOURCE = "/products";
 
 function createProductPayload(product: Product) {
     return {
@@ -12,54 +13,43 @@ function createProductPayload(product: Product) {
     };
 }
 
-export async function getProducts(): Promise<Product[]> {
-    const response = await fetch(API_URL);
-
-    if (!response.ok) {
-        throw new Error("Erro ao buscar produtos");
-    }
-
-    return response.json();
+export function getProducts(): Promise<Product[]> {
+    return apiRequest<Product[]>(
+        RESOURCE,
+        {},
+        "Erro ao buscar produtos"
+    );
 }
 
-export async function createProduct(product: Product): Promise<Product> {
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
+export function createProduct(product: Product): Promise<Product> {
+    return apiRequest<Product>(
+        RESOURCE,
+        {
+            method: "POST",
+            body: JSON.stringify(createProductPayload(product)),
         },
-        body: JSON.stringify(createProductPayload(product)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao cadastrar produto");
-    }
-
-    return response.json();
+        "Erro ao cadastrar produto"
+    );
 }
 
-export async function updateProduct(id: number, product: Product): Promise<Product> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
+export function updateProduct(
+    id: number,
+    product: Product
+): Promise<Product> {
+    return apiRequest<Product>(
+        `${RESOURCE}/${id}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(createProductPayload(product)),
         },
-        body: JSON.stringify(createProductPayload(product)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao atualizar produto");
-    }
-
-    return response.json();
+        "Erro ao atualizar produto"
+    );
 }
 
-export async function deleteProduct(id: number): Promise<void> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao excluir produto");
-    }
+export function deleteProduct(id: number): Promise<void> {
+    return apiRequest<void>(
+        `${RESOURCE}/${id}`,
+        { method: "DELETE" },
+        "Erro ao excluir produto"
+    );
 }

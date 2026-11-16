@@ -1,31 +1,14 @@
 import type { Recipe } from "../types/Recipe";
 import type { RecipeIngredientPayload } from "../types/RecipeIngredient";
 
-const API_URL = "http://localhost:8080/recipes";
+import { apiRequest } from "./api";
 
-function createRecipePayload(recipe: Recipe){
-    return{
-        name:recipe.name,
-        yield:recipe.yield,
-        unitOfMeasure:recipe.unitOfMeasure,
-        preparationMethod:recipe.preparationMethod,
-        preparationTime:recipe.preparationTime,
-        unitOfTime:recipe.unitOfTime,
-        active: recipe.active ?? true,
-    };
-}
+const RESOURCE = "/recipes";
 
 function buildRecipePayload(recipe: Recipe) {
-    const {
-        id,
-        createdAt,
-        updatedAt,
-        recipeIngredients = [],
-        ...recipeData
-    } = recipe;
 
-    const ingredientsPayload: RecipeIngredientPayload[] =
-        recipeIngredients.map((item) => {
+    const recipeIngredients: RecipeIngredientPayload[] =
+        (recipe.recipeIngredients ?? []).map((item) => {
 
             if (item.ingredient.id == null) {
                 throw new Error("Matéria-prima sem identificador.");
@@ -40,59 +23,54 @@ function buildRecipePayload(recipe: Recipe) {
         });
 
     return {
-        ...recipeData,
-        recipeIngredients: ingredientsPayload,
+        name: recipe.name,
+        yield: recipe.yield,
+        unitOfMeasure: recipe.unitOfMeasure,
+        preparationMethod: recipe.preparationMethod,
+        preparationTime: recipe.preparationTime,
+        unitOfTime: recipe.unitOfTime,
+        active: recipe.active ?? true,
+        recipeIngredients,
     };
 }
 
-export async function getRecipes(): Promise<Recipe[]> {
-    const response = await fetch(API_URL);
-
-    if (!response.ok) {
-        throw new Error("Erro ao buscar ficha técnicas");
-    }
-
-    return response.json();
+export function getRecipes(): Promise<Recipe[]> {
+    return apiRequest<Recipe[]>(
+        RESOURCE,
+        {},
+        "Erro ao buscar fichas técnicas"
+    );
 }
 
-export async function createRecipe(recipe: Recipe): Promise<Recipe> {
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
+export function createRecipe(recipe: Recipe): Promise<Recipe> {
+    return apiRequest<Recipe>(
+        RESOURCE,
+        {
+            method: "POST",
+            body: JSON.stringify(buildRecipePayload(recipe)),
         },
-        body: JSON.stringify(buildRecipePayload(recipe)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao cadastrar ficha técnica");
-    }
-
-    return response.json();
+        "Erro ao cadastrar ficha técnica"
+    );
 }
 
-export async function updateRecipe(id: number, recipe: Recipe): Promise<Recipe> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
+export function updateRecipe(
+    id: number,
+    recipe: Recipe
+): Promise<Recipe> {
+    return apiRequest<Recipe>(
+        `${RESOURCE}/${id}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(buildRecipePayload(recipe)),
         },
-        body: JSON.stringify(buildRecipePayload(recipe)),
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao atualizar ficha técnica");
-    }
-
-    return response.json();
+        "Erro ao atualizar ficha técnica"
+    );
 }
 
-export async function deleteRecipe(id: number): Promise<void> {
-    const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-    });
-
-    if (!response.ok) {
-        throw new Error("Erro ao excluir ficha técnica");
-    }
+export function deleteRecipe(id: number): Promise<void> {
+    return apiRequest<void>(
+        `${RESOURCE}/${id}`,
+        { method: "DELETE" },
+        "Erro ao excluir ficha técnica"
+    );
 }
