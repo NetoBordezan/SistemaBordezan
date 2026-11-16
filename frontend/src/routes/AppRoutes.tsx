@@ -1,6 +1,8 @@
 import Dashboard from "../pages/Dashboard";
 import Suppliers from "../pages/Suppliers";
 import Products from "../pages/Products";
+import Recipes from "../pages/Recipes";
+import Ingredients from "../pages/Ingredients";
 
 interface AppRoutesProps {
     currentPath: string;
@@ -31,9 +33,9 @@ function AppRoutes({ currentPath }: AppRoutesProps) {
         case "/products":
             return <Products />;
         case "/ingredients":
-            return <PlaceholderPage title="Matérias-Primas" />;
+             return <Ingredients />;
         case "/recipes":
-            return <PlaceholderPage title="Fichas Técnicas" />;
+            return <Recipes />;
         case "/orders":
             return <PlaceholderPage title="Encomendas" />;
         case "/users":

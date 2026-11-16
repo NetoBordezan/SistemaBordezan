@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cnpj-cpf-validator": "^1.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-imask": "^7.6.1",

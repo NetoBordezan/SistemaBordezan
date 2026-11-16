@@ -1,0 +1,44 @@
+:root {
+    /* Cores principais */
+    --color-brown-900: #3f210f;
+    --color-brown-800: #4a250f;
+    --color-brown-700: #66340f;
+
+    /* Textos */
+    --color-text: #51443a;
+    --color-text-muted: #88796b;
+    --color-text-soft: #79695b;
+
+    /* Superfícies */
+    --color-white: #ffffff;
+    --color-surface-warm: #f8f1e9;
+    --color-surface-soft: #fcfaf7;
+
+    /* Bordas */
+    --color-border: #e9ded2;
+    --color-border-input: #d9ccbf;
+
+    /* Estados */
+    --color-success: #43834c;
+    --color-danger: #b42318;
+    --color-danger-hover: #8f1d14;
+    --color-accent: #b27a16;
+
+    /* Tipografia */
+    --font-title: Georgia, "Times New Roman", serif;
+
+    /* Bordas arredondadas */
+    --radius-sm: 8px;
+    --radius-md: 9px;
+    --radius-lg: 15px;
+    --radius-xl: 16px;
+    --radius-pill: 999px;
+
+    /* Sombras */
+    --shadow-card: 0 8px 26px rgba(63, 33, 15, 0.06);
+    --shadow-soft: 0 5px 18px rgba(63, 33, 15, 0.05);
+
+    /* Foco */
+    --focus-border: var(--color-accent);
+    --focus-shadow: 0 0 0 3px rgba(178, 122, 22, 0.10);
+}

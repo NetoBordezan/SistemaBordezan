@@ -15,23 +15,24 @@
 .status-filter {
     width: 100%;
     padding: 12px 13px;
-    border: 1px solid #d9ccbf;
-    border-radius: 9px;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
     outline: none;
-    background: #fff;
-    color: #51443a;
+    background: var(--color-white);
+    color: var(--color-text);
     font-size: 14px;
     cursor: pointer;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .status-filter:focus {
-    border-color: #b27a16;
+    border-color: var(--color-accent);
     box-shadow: 0 0 0 3px rgba(178, 122, 22, 0.10);
 }
 
 .supplier-list,
-.product-list {
+.product-list,
+.recipe-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -41,20 +42,22 @@
 }
 
 .supplier-item,
-.product-item {
+.product-item,
+.recipe-item{
     min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 22px;
-    border: 1px solid #e9ded2;
-    border-radius: 15px;
-    background: #fff;
-    box-shadow: 0 5px 18px rgba(63, 33, 15, 0.05);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    box-shadow: var(--shadow-soft);
 }
 
 .supplier-card-header,
-.product-card-header {
+.product-card-header,
+.recipe-card-header{
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -71,7 +74,7 @@
 .supplier-card-header strong,
 .product-card-header strong {
     color: #2f1b0f;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-title);
     font-size: 21px;
     line-height: 1.2;
 }
@@ -86,7 +89,7 @@
 .status-badge {
     flex-shrink: 0;
     padding: 5px 9px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-size: 12px;
     font-weight: 700;
 }
@@ -102,7 +105,8 @@
 }
 
 .supplier-details,
-.product-details {
+.product-details,
+.recipe-details{
     display: grid;
     gap: 13px;
     padding-top: 16px;
@@ -110,14 +114,16 @@
 }
 
 .supplier-details > div,
-.product-details > div {
+.product-details > div,
+.recipe-details > div  {
     display: grid;
     gap: 4px;
 }
 
 .supplier-details span:not(.detail-label),
-.product-details span:not(.detail-label) {
-    color: #51443a;
+.product-details span:not(.detail-label),
+.recipe-details span:not(.detail-label){
+    color: var(--color-text);
     font-size: 14px;
     overflow-wrap: anywhere;
 }
@@ -142,26 +148,27 @@
 .delete-button {
     padding: 10px 12px;
     border: 0;
-    border-radius: 9px;
-    color: #fff;
+    border-radius: var(--radius-md);
+    color: var(--color-white);
     font-weight: 700;
 }
 
 .edit-button {
-    background: #4a250f;
+    background: var(--color-brown-800);
 }
 
 .delete-button {
-    background: #b42318;
+    background: var(--color-danger);
 }
 
 .delete-button:hover {
-    background: #8f1d14;
+    background: var(--color-danger-hover);
 }
 
 @media (max-width: 1150px) {
     .supplier-list,
-    .product-list {
+    .product-list,
+    .recipe-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
@@ -176,14 +183,16 @@
     }
 
     .supplier-list,
-    .product-list {
+    .product-list,
+    .recipe-list{
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 760px) {
     .supplier-item,
-    .product-item {
+    .product-item,
+    .recipe-item{
         padding: 18px;
     }
 }

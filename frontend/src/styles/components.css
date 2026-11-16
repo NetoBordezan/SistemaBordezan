@@ -2,11 +2,11 @@
 .list-section,
 .placeholder-card,
 .dashboard-card {
-    background: #fff;
-    border-radius: 16px;
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
     padding: 22px;
-    border: 1px solid #e9ded2;
-    box-shadow: 0 8px 26px rgba(63, 33, 15, 0.06);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
 }
 
 .form-section {
@@ -24,7 +24,7 @@
 .product-form h3,
 .list-header h3 {
     margin: 0;
-    color: #3f210f;
+    color: var(--color-brown-900);
 }
 
 .supplier-form h3,
@@ -38,10 +38,10 @@
 .search-input {
     width: 100%;
     padding: 12px 13px;
-    border: 1px solid #d9ccbf;
-    border-radius: 9px;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
     outline: none;
-    background: #fff;
+    background: var(--color-white);
     font-size: 14px;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -50,7 +50,7 @@
 .product-form input:focus,
 .product-form textarea:focus,
 .search-input:focus {
-    border-color: #b27a16;
+    border-color: var(--color-accent);
     box-shadow: 0 0 0 3px rgba(178, 122, 22, 0.10);
 }
 
@@ -58,9 +58,9 @@
 .product-form button,
 .new-button {
     border: 0;
-    border-radius: 9px;
-    background: #4a250f;
-    color: #fff;
+    border-radius: var(--radius-md);
+    background: var(--color-brown-800);
+    color: var(--color-white);
     font-weight: 700;
     transition: transform 0.15s ease, background 0.15s ease;
 }
@@ -74,9 +74,9 @@
     flex-shrink: 0;
     padding: 12px 22px;
     border: none;
-    border-radius: 9px;
-    background: #4a250f;
-    color: #fff;
+    border-radius: var(--radius-md);
+    background: var(--color-brown-800);
+    color: var(--color-white);
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
@@ -87,7 +87,7 @@
 .product-form button:hover,
 .new-button:hover,
 .edit-button:hover {
-    background: #66340f;
+    background: var(--color-brown-700);
 }
 
 .new-button:hover {
@@ -97,8 +97,8 @@
 
 .cancel-button {
     border: 1px solid #d8ccbf !important;
-    background: #fff !important;
-    color: #4a250f !important;
+    background: var(--color-white) !important;
+    color: var(--color-brown-800) !important;
 }
 
 .cancel-button:hover {
@@ -118,7 +118,7 @@
 }
 
 .error-message {
-    color: #b42318;
+    color: var(--color-danger);
     font-weight: bold;
 }
 
@@ -131,12 +131,12 @@
 }
 
 .empty-state strong {
-    color: #3f210f;
+    color: var(--color-brown-900);
 }
 
 .list-description {
     margin: 5px 0 0;
-    color: #88796b;
+    color: var(--color-text-muted);
     font-size: 13px;
 }
 

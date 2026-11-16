@@ -1,0 +1,92 @@
+/* Painel do formulário */
+
+.ingredient-form-panel {
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-white);
+    box-shadow: 0 5px 18px rgba(63, 33, 15, 0.04);
+}
+
+.ingredient-form {
+    display: grid;
+    gap: 20px;
+}
+
+/* Cabeçalho */
+
+.ingredient-form-heading h3 {
+    margin: 0;
+    color: var(--color-brown-900);
+    font-family: var(--font-title);
+    font-size: 22px;
+}
+
+.ingredient-form-heading p {
+    margin: 7px 0 0;
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+
+/* Campos */
+
+.ingredient-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.ingredient-form-grid label {
+    display: grid;
+    gap: 8px;
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ingredient-form input:not([type="checkbox"]) {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
+    outline: none;
+    background: var(--color-white);
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.ingredient-form input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(178, 122, 22, 0.10);
+}
+
+/* Ações */
+
+.ingredient-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ingredient-submit-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-brown-800);
+    color: var(--color-white);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ingredient-submit-button:hover {
+    background: var(--color-brown-700);
+}
+
+/* Responsividade */
+
+@media (max-width: 650px) {
+    .ingredient-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

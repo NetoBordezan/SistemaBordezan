@@ -1,0 +1,44 @@
+/* Cabeçalho da página */
+
+.recipes-header {
+    margin-bottom: 26px;
+}
+
+.recipes-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    color: #9a704e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.recipes-header h1 {
+    font-family: var(--font-title);
+    font-size: 34px;
+}
+
+/* Botão de nova ficha */
+
+.recipes-header .new-button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 12px 20px;
+}
+
+/* Responsividade do cabeçalho */
+
+@media (max-width: 760px) {
+    .recipes-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .recipes-header .new-button {
+        width: 100%;
+    }
+}

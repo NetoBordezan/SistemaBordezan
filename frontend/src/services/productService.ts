@@ -32,16 +32,13 @@ export async function createProduct(product: Product): Promise<Product> {
     });
 
     if (!response.ok) {
-        throw new Error("Erro ao cadastrar fornecedor");
+        throw new Error("Erro ao cadastrar produto");
     }
 
     return response.json();
 }
 
-export async function updateProduct(
-    id: number,
-    product: Product
-): Promise<Product> {
+export async function updateProduct(id: number, product: Product): Promise<Product> {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: {
